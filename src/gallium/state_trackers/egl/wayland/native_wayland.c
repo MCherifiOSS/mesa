@@ -303,6 +303,7 @@ wayland_surface_present(struct native_surface *nsurf,
                         const struct native_present_control *ctrl)
 {
    struct wayland_surface *surface = wayland_surface(nsurf);
+   struct wayland_display *display = surface->display;
    uint width, height;
    boolean ret;
 
@@ -339,6 +340,7 @@ wayland_surface_present(struct native_surface *nsurf,
       resource_surface_get_size(surface->rsurf, &width, &height);
       wl_surface_damage(surface->win->surface, 0, 0, width, height);
       wl_surface_commit(surface->win->surface);
+      wl_display_flush(display->dpy);
    }
 
    return ret;
